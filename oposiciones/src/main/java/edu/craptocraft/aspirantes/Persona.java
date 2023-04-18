@@ -2,10 +2,10 @@ package edu.craptocraft.aspirantes;
 
 public class Persona {
     private static int contador = 0;
-    private int id;
-    private String nombre;
-    private String apellido1;
-    private String apellido2;
+    protected int id;
+    protected String nombre;
+    protected String apellido1;
+    protected String apellido2;
 
     public Persona(String nombre, String apellido1, String apellido2) {
         this.nombre = nombre;
@@ -33,4 +33,5 @@ public class Persona {
     public static int getContador() {
         return contador;
     }
+
 }

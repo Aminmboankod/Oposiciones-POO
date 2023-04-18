@@ -1,7 +1,6 @@
 package edu.craptocraft;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +8,15 @@ import java.util.Map;
 import edu.craptocraft.aspirantes.Docente;
 import edu.craptocraft.aspirantes.Persona;
 import edu.craptocraft.aspirantes.Sanitario;
+import edu.craptocraft.tipos.Adjudicada;
 import edu.craptocraft.tipos.TipoPlaza;
 
 public class Adjudicador {
 
-    List<Plaza> plazas;
-    List<Persona> personas;
+    List<Plaza> plazas = new ArrayList<>();
+    List<Persona> personas = new ArrayList<>();
     Map<TipoPlaza, List<Persona>> especialistasDisponibles = new HashMap<>();
+    Map<Plaza, Persona> adjudicaciones = new HashMap<>();
 
     public Adjudicador() {
     }
@@ -54,15 +55,49 @@ public class Adjudicador {
 
         añadirPersonas();
 
-        // Adjudicar las plazas por orden de plaza
+        // Añadir las personas con mayor puntuacion o mayor días trabajados a la lista
+        // de plazas
+
         for (Plaza plaza : plazas) {
+            if (plaza.getTipo() == TipoPlaza.DOCENTE) {
+                if (especialistasDisponibles.get(TipoPlaza.DOCENTE).size() > 0) {
+                    Persona persona = especialistasDisponibles.get(TipoPlaza.DOCENTE).get(0);
+                    especialistasDisponibles.get(TipoPlaza.DOCENTE).remove(0);
+                    plaza.setPersona(persona);
+                    plaza.setAdjudicada(Adjudicada.ADJUDICADA);
+                    adjudicaciones.put(plaza, persona);
+                }
+            } else if (plaza.getTipo() == TipoPlaza.SANITARIO) {
+                if (especialistasDisponibles.get(TipoPlaza.SANITARIO).size() > 0) {
+                    Persona persona = especialistasDisponibles.get(TipoPlaza.SANITARIO).get(0);
+                    especialistasDisponibles.get(TipoPlaza.SANITARIO).remove(0);
+                    plaza.setPersona(persona);
+                    plaza.setAdjudicada(Adjudicada.ADJUDICADA);
+                    adjudicaciones.put(plaza, persona);
+                }
+            }
+        }
 
-            TipoPlaza tipoPlaza = plaza.getTipo();
-            List<Persona> especialistas = especialistasDisponibles.get(tipoPlaza);
+    }
 
-            // Recorrer la lista de especialistas disponibles en orden descendente de su
-            // puntuación o días trabajados
-
+    public void mostrarAdjudicaciones() {
+        System.out.println(" =============================================" +
+                "La última adjudicación de plazas ha producido \nlos siguientes resultados para " + TipoPlaza.DOCENTE
+                +
+                " =============================================");
+        for (Plaza plaza : plazas) {
+            if (plaza.getTipo() == TipoPlaza.DOCENTE) {
+                System.out.println(plaza.toString());
+            }
+        }
+        System.out.println(" =============================================" +
+                "La última adjudicación de plazas ha producido \nlos siguientes resultados para " + TipoPlaza.SANITARIO
+                +
+                " =============================================");
+        for (Plaza plaza : plazas) {
+            if (plaza.getTipo() == TipoPlaza.SANITARIO) {
+                System.out.println(plaza.toString());
+            }
         }
     }
 }

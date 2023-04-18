@@ -17,4 +17,13 @@ public class Sanitario extends Persona {
     public int getDiasTrabajados() {
         return diasTrabajados;
     }
+
+    public String toString() {
+        return "ID: " + id + "\n" +
+                "Nombre: " + nombre + "\n" +
+                "Apellido 1: " + apellido1 + "\n" +
+                "Apellido 2: " + apellido2 + "\n" +
+                "Titulación: " + especialidad + "\n" +
+                "Días trabajados: " + diasTrabajados + "\n";
+    }
 }
